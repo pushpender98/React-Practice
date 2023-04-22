@@ -1,5 +1,4 @@
-import React, { useReducer, useState } from "react";
-// import { useEffect } from 'react';
+import React, { useEffect, useReducer, useState } from "react";
 import Card from "../UI/Card/Card";
 import classes from "./Login.module.css";
 import Button from "../UI/Button/Button";
@@ -43,7 +42,10 @@ const Login = (props) => {
   const [passwordState, dispatchPassword] = useReducer(passwordReducer, {
 		value: "",
 		isValid: null,
-	});
+  });
+  
+  const { isValid: emailIsValid } = emailState
+  const { isValid: passwordIsValid }  = passwordState
 
 	// /** USE EFFECT Runs Every Time */
 	// useEffect(() => {
@@ -56,32 +58,32 @@ const Login = (props) => {
 	// }, []);
 
 	/** USE EFFECT With clean up */
-	// useEffect(() => {
-	//   const identifier = setTimeout(() => {
-	//     console.log("IS Valid or not")
-	//     setFormIsValid(
-	//       enteredEmail.trim().length > 6 && enteredEmail.includes('@')
-	//     );
-	//   }, 500)
+	useEffect(() => {
+	  const identifier = setTimeout(() => {
+	    console.log("IS Valid or not")
+	    setFormIsValid(
+	      emailIsValid && passwordIsValid
+	    );
+	  }, 500)
 
-	//   /** Clean UP function */
-	//   return () => {
-	//     console.log("Clean Up")
-	//     clearTimeout(identifier);
-	//   }
-	//  }, [enteredEmail, enteredPassword])
+	  /** Clean UP function */
+	  return () => {
+	    console.log("Clean Up")
+	    clearTimeout(identifier);
+	  }
+	 }, [emailIsValid, passwordIsValid])
 
 	const emailChangeHandler = (event) => {
 		dispatchEmail({ type: "USER_INPUT", val: event.target.value });
 
-		setFormIsValid(passwordState.isValid && emailState.isValid);
+		// setFormIsValid(passwordState.isValid && emailState.isValid);
 	};
 
 	const passwordChangeHandler = (event) => {
 		// setEnteredPassword(event.target.value);
     dispatchPassword({ type: "USER_INPUT", val: event.target.value });
 
-		setFormIsValid(passwordState.isValid && emailState.isValid);
+		// setFormIsValid(passwordState.isValid && emailState.isValid);
 	};
 
 	const validateEmailHandler = () => {
